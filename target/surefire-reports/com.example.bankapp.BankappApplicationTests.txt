@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.example.bankapp.BankappApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.437 s -- in com.example.bankapp.BankappApplicationTests
