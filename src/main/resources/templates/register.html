@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register - EASY BANKING</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary-dark: #2C3E50;
+            --primary-darker: #1A252F;
+            --secondary-dark: #34495E;
+            --accent-gold: #F1C40F;
+            --accent-gold-light: #F7DC6F;
+            --light-text: #ECF0F1;
+            --danger-color: #E74C3C;
+            --form-bg: rgba(44, 62, 80, 0.8);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: var(--primary-dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent-gold) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-custom .social-icons a {
+            color: var(--light-text);
+            margin-left: 15px;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .navbar-custom .social-icons a:hover {
+            color: var(--accent-gold);
+        }
+
+        .register-container {
+            max-width: 500px;
+            width: 100%;
+            margin: 80px auto;
+            padding: 40px;
+            background-color: var(--form-bg);
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .register-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .register-header h2 {
+            color: var(--accent-gold);
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .register-header p {
+            color: var(--light-text);
+            opacity: 0.8;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            color: var(--accent-gold-light);
+            font-weight: 500;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 12px 15px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-gold);
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(241, 196, 15, 0.25);
+        }
+
+        .input-icon {
+            position: relative;
+        }
+
+        .input-icon i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--accent-gold);
+        }
+
+        .input-icon input {
+            padding-left: 45px;
+        }
+
+        .password-strength {
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+
+        .strength-meter {
+            height: 100%;
+            width: 0;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+
+        .btn-register {
+            background-color: var(--accent-gold);
+            color: var(--primary-dark);
+            border: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            border-radius: 8px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-register:hover {
+            background-color: var(--accent-gold-light);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .register-footer {
+            text-align: center;
+            margin-top: 25px;
+            color: var(--light-text);
+        }
+
+        .register-footer a {
+            color: var(--accent-gold);
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .register-footer a:hover {
+            color: var(--accent-gold-light);
+            text-decoration: underline;
+        }
+
+        .alert-danger {
+            background-color: rgba(231, 76, 60, 0.2);
+            border-left: 4px solid var(--danger-color);
+            color: var(--light-text);
+            padding: 12px;
+            border-radius: 4px;
+            margin-top: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .footer {
+            background-color: var(--primary-darker);
+            color: var(--light-text);
+            padding: 20px 0;
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--accent-gold-light);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .register-container {
+                padding: 30px 20px;
+                margin: 60px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-university mr-2"></i>EASY BANKING
+        </a>
+        <div class="ml-auto social-icons">
+           
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="register-container">
+        <div class="register-header">
+            <h2><i class="fas fa-user-plus mr-2"></i>Create Your Account</h2>
+            <p>Join EASY BANKING today to access premium banking services</p>
+        </div>
+
+        <form method="post" action="/register">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <div class="input-icon">
+                    <i class="fas fa-user"></i>
+                    <input type="text" class="form-control" id="username" name="username" required placeholder="Choose a username">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="form-control" id="password" name="password" required placeholder="Create a password">
+                </div>
+                <div class="password-strength">
+                    <div class="strength-meter" id="strength-meter"></div>
+                </div>
+                <small class="text-muted">Use at least 8 characters with a mix of letters, numbers, and symbols</small>
+            </div>
+
+            <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <div class="input-icon">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" class="form-control" id="confirm-password" name="confirmPassword" required placeholder="Re-enter your password">
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-register">
+                <i class="fas fa-user-plus mr-2"></i>Create Account
+            </button>
+
+            <div th:if="${error}" class="alert alert-danger mt-4">
+                <i class="fas fa-exclamation-circle mr-2"></i>Username already exists
+            </div>
+        </form>
+
+        <div class="register-footer">
+            <p>Already have an account? <a href="/login">Sign in here</a></p>
+        </div>
+    </div>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p>Need help? Contact our <a href="#">24/7 Customer Support</a></p>
+                <p class="copyright">© 2024 EASY BANKING. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Password strength indicator
+    document.getElementById('password').addEventListener('input', function() {
+        const password = this.value;
+        const meter = document.getElementById('strength-meter');
+        let strength = 0;
+        
+        // Check for length
+        if (password.length >= 8) strength += 1;
+        if (password.length >= 12) strength += 1;
+        
+        // Check for character variety
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+        
+        // Update meter
+        const width = strength * 20;
+        meter.style.width = width + '%';
+        
+        // Update color
+        if (strength <= 2) {
+            meter.style.backgroundColor = '#E74C3C'; // Red
+        } else if (strength <= 4) {
+            meter.style.backgroundColor = '#F39C12'; // Orange
+        } else {
+            meter.style.backgroundColor = '#27AE60'; // Green
+        }
+    });
+
+    // Simple animation for form elements
+    document.addEventListener('DOMContentLoaded', function() {
+        const formGroups = document.querySelectorAll('.form-group');
+        formGroups.forEach((group, index) => {
+            group.style.animation = `fadeIn 0.5s ease ${index * 0.1}s forwards`;
+            group.style.opacity = '0';
+        });
+    });
+</script>
+</body>
+</html>

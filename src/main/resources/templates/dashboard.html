@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard - EASY BANKING</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-dark: #2C3E50;
+            --primary-darker: #1A252F;
+            --secondary-dark: #34495E;
+            --accent-gold: #F1C40F;
+            --accent-gold-light: #F7DC6F;
+            --light-text: #ECF0F1;
+            --success-color: #27AE60;
+            --success-hover: #229954;
+            --info-color: #2980B9;
+            --info-hover: #1A5276;
+            --danger-color: #E74C3C;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-dark), var(--secondary-dark));
+            color: var(--light-text);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .navbar-custom {
+            background-color: var(--primary-dark);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 0.8rem 1rem;
+        }
+
+        .navbar-custom .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--accent-gold) !important;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-custom .nav-link {
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            margin: 0 0.2rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .navbar-custom .nav-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 80px auto 100px;
+            padding: 0 20px;
+        }
+
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .welcome-section h2 {
+            font-weight: 300;
+            margin-bottom: 10px;
+            color: var(--light-text);
+        }
+
+        .welcome-section h3 {
+            font-weight: 600;
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+        }
+
+        .account-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .account-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .account-card h4 {
+            color: var(--accent-gold);
+            margin-bottom: 20px;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(241, 196, 15, 0.3);
+            padding-bottom: 10px;
+        }
+
+        .account-detail {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .account-detail:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .account-detail strong {
+            color: var(--accent-gold-light);
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .action-button {
+            width: 220px;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-button i {
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+
+        .action-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .btn-primary-custom {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .btn-primary-custom:hover {
+            background-color: var(--info-hover);
+            color: white;
+        }
+
+        .form-container {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .form-container label {
+            font-weight: 500;
+            color: var(--accent-gold-light);
+        }
+
+        .form-control {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            margin-bottom: 15px;
+        }
+
+        .form-control:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-color: var(--accent-gold);
+            color: white;
+            box-shadow: 0 0 0 0.2rem rgba(241, 196, 15, 0.25);
+        }
+
+        .btn-submit {
+            background-color: var(--success-color);
+            border: none;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            padding: 10px 20px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-submit:hover {
+            background-color: var(--success-hover);
+            transform: translateY(-2px);
+        }
+
+        .error {
+            color: var(--danger-color);
+            font-weight: 500;
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger-color);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .footer {
+            background-color: var(--primary-darker);
+            color: var(--light-text);
+            padding: 20px 0;
+            margin-top: auto;
+            text-align: center;
+            font-size: 0.9rem;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .footer a {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .footer a:hover {
+            color: var(--accent-gold-light);
+            text-decoration: underline;
+        }
+
+        .copyright {
+            margin-top: 10px;
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .dashboard-container {
+                margin-top: 70px;
+                margin-bottom: 80px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .account-card {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="fas fa-university mr-2"></i>EASY BANKING
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <i class="fas fa-bars" style="color: var(--accent-gold);"></i>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="/dashboard">
+                        <i class="fas fa-tachometer-alt mr-1"></i> Dashboard
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/transactions">
+                        <i class="fas fa-exchange-alt mr-1"></i> Transactions
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/logout">
+                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h2 th:text="'Welcome back, ' + ${account.username}"></h2>
+        <h3>
+            <i class="fas fa-wallet mr-2"></i>
+            <span th:text="'₹' + ${#numbers.formatDecimal(account.balance, 1, 2)}"></span>
+        </h3>
+    </div>
+
+    <!-- Account Details Section -->
+    <div class="account-card">
+        <h4><i class="fas fa-info-circle mr-2"></i>Account Details</h4>
+        <div class="account-detail">
+            <strong>Account Number:</strong>
+            <span th:text="${account.id}"></span>
+        </div>
+        <div class="account-detail">
+            <strong>Account Type:</strong>
+            <span>Savings Account</span>
+        </div>
+        <!-- <div class="account-detail">
+            <strong>Member Since:</strong>
+            <span>January 202</span>
+        </div> -->
+        <div class="account-detail">
+            <strong>Last Login:</strong>
+            <span>Today, <span th:text="${#temporals.format(#temporals.createNow(), 'HH:mm')}"></span></span>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-button btn-primary-custom" type="button" data-toggle="collapse" data-target="#depositForm">
+            <i class="fas fa-money-bill-wave"></i> Deposit
+        </button>
+        
+        <button class="action-button btn-primary-custom" type="button" data-toggle="collapse" data-target="#withdrawForm">
+            <i class="fas fa-hand-holding-usd"></i> Withdraw
+        </button>
+        
+        <button class="action-button btn-primary-custom" type="button" data-toggle="collapse" data-target="#transferForm">
+            <i class="fas fa-paper-plane"></i> Transfer
+        </button>
+    </div>
+
+    <!-- Forms (initially hidden) -->
+    <div class="row justify-content-center">
+        <!-- Deposit Form -->
+        <div class="col-md-8">
+            <div class="collapse" id="depositForm">
+                <form method="post" action="/deposit" class="form-container">
+                    <h5 class="text-center mb-4" style="color: var(--accent-gold);">
+                        <i class="fas fa-money-bill-wave mr-2"></i>Deposit Funds
+                    </h5>
+                    <div class="form-group">
+                        <label>Rupee:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₹</span>
+                            </div>
+                            <input type="number" class="form-control" name="amount" min="1" step="0.01" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-submit btn-block">
+                        <i class="fas fa-check mr-2"></i>Confirm Deposit
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Withdraw Form -->
+        <div class="col-md-8">
+            <div class="collapse" id="withdrawForm">
+                <form method="post" action="/withdraw" class="form-container">
+                    <h5 class="text-center mb-4" style="color: var(--accent-gold);">
+                        <i class="fas fa-hand-holding-usd mr-2"></i>Withdraw Funds
+                    </h5>
+                    <div class="form-group">
+                        <label>Rupee:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₹</span>
+                            </div>
+                            <input type="number" class="form-control" name="amount" min="1" step="0.01" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-submit btn-block">
+                        <i class="fas fa-check mr-2"></i>Confirm Withdrawal
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Transfer Form -->
+        <div class="col-md-8">
+            <div class="collapse" id="transferForm">
+                <form method="post" action="/transfer" class="form-container">
+                    <h5 class="text-center mb-4" style="color: var(--accent-gold);">
+                        <i class="fas fa-paper-plane mr-2"></i>Transfer Funds
+                    </h5>
+                    <div class="form-group">
+                        <label>Recipient Username:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            </div>
+                            <input type="text" class="form-control" name="toUsername" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Rupee:</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">₹</span>
+                            </div>
+                            <input type="number" class="form-control" name="amount" min="1" step="0.01" required />
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-submit btn-block">
+                        <i class="fas fa-check mr-2"></i>Confirm Transfer
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <p th:if="${error != null}" th:text="${error}" class="error"></p>
+</div>
+
+<footer class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <p class="copyright">© 2025 EASY BANKING. All rights reserved. | <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a></p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script>
+    // Close other forms when one is opened
+    $('.action-button').click(function() {
+        var target = $(this).attr('data-target');
+        $('.collapse').not(target).collapse('hide');
+    });
+    
+    // Format currency inputs on blur
+    $('input[type="number"]').on('blur', function() {
+        var value = parseFloat($(this).val());
+        if (!isNaN(value)) {
+            $(this).val(value.toFixed(2));
+        }
+    });
+</script>
+</body>
+</html>
