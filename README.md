@@ -31,7 +31,7 @@ It allows users to register, log in, transfer money, deposit/withdraw funds, and
 | Backend       | Java, Spring Boot  |
 | Security      | Spring Security    |
 | ORM & DB      | JPA, Hibernate, MySQL |
-| Frontend      | Thymeleaf (or your frontend stack) |
+| Frontend      | Thymeleaf |
 | Build Tool    | Maven              |
 
 ---
